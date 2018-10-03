@@ -2,6 +2,7 @@ package pl.parser.nbp;
 
 import pl.parser.nbp.entity.CourseTable;
 import pl.parser.nbp.entity.DirEntity;
+import pl.parser.nbp.entity.Position;
 import pl.parser.nbp.entity.ValidArgs;
 import pl.parser.nbp.web.NbpConnector;
 
@@ -30,11 +31,11 @@ public class MainClass {
             System.exit(1);
         }
 
-        XmlValidator xmlValidator = new XmlValidator();
+        // parse dir*.txt files
         List<String> dirlist = new ArrayList<>();
         for (String i : validArgs.getDirNameFiles()) {
-                 nbpConnector =new NbpConnector(nbpDir+i );
-                 dirlist.addAll(Arrays.asList(nbpConnector.getResponse("text/plain").split("\r\n")));
+            nbpConnector =new NbpConnector(nbpDir+i );
+            dirlist.addAll(Arrays.asList(nbpConnector.getResponse("text/plain").split("\r\n")));
         }
 
         List<DirEntity> nowaLista = dirlist.stream()
@@ -48,19 +49,20 @@ public class MainClass {
                                           .filter(dirEntity -> dirEntity.getTableDate().isBefore(validArgs.getEndDate().get().plusDays(1L) ))
                                          .collect(Collectors.toList());
 
-        // get list course table
-        List<CourseTable> ctList = new ArrayList<>();
+        // get list course table from xml
+        XmlValidator xmlValidator = new XmlValidator();
+        List<Position> pList = new ArrayList<>();
+        // this might be used lambda, but I decided  for loop because I thint there are less line of code :)
         try {
             for(DirEntity de : nowaLista) {
-                CourseTable ct = xmlValidator.getSingleTable(new URL(nbpDir+de.getLine()+".xml"));
-                ctList.add(ct);
+                pList.add(xmlValidator.getSinglePositonFromTable( new URL(nbpDir+de.getLine()+".xml"), validArgs.getCode()).get() );
             }
         } catch (JAXBException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        CourseCalculator courseCalculator = new CourseCalculator(ctList, validArgs.getCode());
+        CourseCalculator courseCalculator = new CourseCalculator(pList);
         System.out.println(courseCalculator.getMeanCourses("buy"));
         System.out.println(courseCalculator.getStdDev("sell"));
     }

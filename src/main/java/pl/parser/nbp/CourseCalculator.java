@@ -1,26 +1,17 @@
 package pl.parser.nbp;
 
-import pl.parser.nbp.entity.CourseTable;
 import pl.parser.nbp.entity.Position;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CourseCalculator {
 
     private List<Position> listCourse;
 
-    CourseCalculator(List<CourseTable> ct , String code) {
-        listCourse = ct.stream().map(courseTable -> { Optional<Position> pos = courseTable.getPositons()
-                                                                 .stream()
-                                                                 .filter( p -> p.getCode().equals(code))
-                                                                .findFirst();
-                                                      return pos.get();
-                                                     })
-                    .collect(Collectors.toList());
+    CourseCalculator(List<Position> pList) {
+        this.listCourse = pList;
     }
 
     private Integer getNumberOfPositons() {

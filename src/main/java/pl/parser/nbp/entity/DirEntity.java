@@ -19,11 +19,10 @@ public class DirEntity {
     String line;
 
     public DirEntity(String  table) {
-        line = table;
+        line = table.replaceAll("\\p{C}","");
         if (table.length()==11) {
             parseDirtable(table);
         } else {
-            System.out.println(table.length());
             parseDirtable(table.substring(table.length()-11,table.length()));
         }
     }
@@ -36,7 +35,4 @@ public class DirEntity {
                 Integer.parseInt(table.substring(table.length()-2, table.length())));
     }
 
-    public String getLine() {
-        return line.replaceAll("\\p{C}","");
-    }
 }
