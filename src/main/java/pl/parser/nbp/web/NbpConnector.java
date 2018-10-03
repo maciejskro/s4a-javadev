@@ -9,7 +9,6 @@ public class NbpConnector {
     Client client;
     WebResource webResource;
 
-
     public NbpConnector(String url) {
 
         client = Client.create();

@@ -10,14 +10,13 @@ import java.util.regex.Pattern;
 public class ArgsValidator {
 
     private String[] args;
-    private ValidArgs result;
 
     ArgsValidator(String[] args) {
         this.args = args;
     }
 
-    public ValidArgs getValidArgs() {
-        result=  new ValidArgs();
+    ValidArgs getValidArgs() {
+        ValidArgs result = new ValidArgs();
         if (args.length != 3 ) {
             return result;
         }
@@ -44,7 +43,6 @@ public class ArgsValidator {
             }
         }
 
-
-        return  result;
+        return result;
     }
 }

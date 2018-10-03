@@ -1,13 +1,11 @@
 package pl.parser.nbp;
 
-import pl.parser.nbp.entity.CourseTable;
 import pl.parser.nbp.entity.DirEntity;
 import pl.parser.nbp.entity.Position;
 import pl.parser.nbp.entity.ValidArgs;
 import pl.parser.nbp.web.NbpConnector;
 
 import javax.xml.bind.JAXBException;
-import java.math.MathContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
