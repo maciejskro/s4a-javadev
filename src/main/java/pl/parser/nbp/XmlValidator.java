@@ -10,16 +10,15 @@ import java.net.URL;
 
 public class XmlValidator {
 
-    JAXBContext jaxbContext;
-    Unmarshaller jaxbUnmarshaller;
+    private JAXBContext jaxbContext;
+    private Unmarshaller jaxbUnmarshaller;
 
     public XmlValidator() {
         try {
             jaxbContext = JAXBContext.newInstance(CourseTable.class);
-            jaxbUnmarshaller= jaxbContext.createUnmarshaller();
+            jaxbUnmarshaller=  jaxbContext.createUnmarshaller();
         }
         catch (JAXBException e) {
-            System.out.println("Wrong xml format");
             System.err.println("wrong xml format");
         }
     }

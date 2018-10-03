@@ -35,4 +35,8 @@ public class DirEntity {
                 Integer.parseInt(table.substring(7,9)),
                 Integer.parseInt(table.substring(table.length()-2, table.length())));
     }
+
+    public String getLine() {
+        return line.replaceAll("\\p{C}","");
+    }
 }

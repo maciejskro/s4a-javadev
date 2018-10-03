@@ -62,8 +62,10 @@ public class ValidArgs {
                     }
                 }
             } else {
-                if (startDate.get().getYear() == LocalDate.now().getYear())
-                result.add( "dir.txt");
+                if (startDate.get().getYear() == LocalDate.now().getYear()) {
+                    result.add("dir.txt");
+                } else
+                    result.add("dir" + startDate.get().getYear() + ".txt");
             }
         }
 

@@ -1,10 +1,14 @@
 package pl.parser.nbp;
 
+import pl.parser.nbp.entity.CourseTable;
 import pl.parser.nbp.entity.DirEntity;
 import pl.parser.nbp.entity.ValidArgs;
 import pl.parser.nbp.web.NbpConnector;
 
-import java.time.LocalDate;
+import javax.xml.bind.JAXBException;
+import java.math.MathContext;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +30,7 @@ public class MainClass {
             System.exit(1);
         }
 
+        XmlValidator xmlValidator = new XmlValidator();
         List<String> dirlist = new ArrayList<>();
         for (String i : validArgs.getDirNameFiles()) {
                  nbpConnector =new NbpConnector(nbpDir+i );
@@ -39,10 +44,27 @@ public class MainClass {
                                                     }
                                             })
                                           .filter(dirEntity -> dirEntity.getTableName().equals('c'))
-                                          .filter(dirEntity -> dirEntity.getTableDate().isAfter(validArgs.getStartDate().get()))
-                                          .filter(dirEntity -> dirEntity.getTableDate().isBefore(validArgs.getEndDate().get()))
+                                          .filter(dirEntity -> dirEntity.getTableDate().isAfter(validArgs.getStartDate().get().minusDays(1L) ))
+                                          .filter(dirEntity -> dirEntity.getTableDate().isBefore(validArgs.getEndDate().get().plusDays(1L) ))
                                          .collect(Collectors.toList());
-        System.out.println(nowaLista);
+
+        // get list course table
+        List<CourseTable> ctList = new ArrayList<>();
+        try {
+            for(DirEntity de : nowaLista) {
+                CourseTable ct = xmlValidator.getSingleTable(new URL(nbpDir+de.getLine()+".xml"));
+                ctList.add(ct);
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        CourseCalculator courseCalculator = new CourseCalculator(ctList, validArgs.getCode());
+        System.out.println(courseCalculator.getMeanCourses("buy"));
+        System.out.println(courseCalculator.getStdDev("sell"));
     }
+
+
 
 }
