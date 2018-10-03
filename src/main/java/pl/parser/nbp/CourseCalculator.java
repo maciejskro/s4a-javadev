@@ -48,7 +48,7 @@ public class CourseCalculator {
         if (! listCourse.isEmpty() )  {
             if (type.equals("buy")) {
                 for (Position p : listCourse) {
-                    val.add( (p.getBuy().subtract(mean)).pow(2) );
+                    val = val.add( (p.getBuy().subtract(mean)).pow(2) );
                 }
             } else {
                 for (Position p : listCourse) {
